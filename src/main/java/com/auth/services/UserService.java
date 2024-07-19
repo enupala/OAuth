@@ -45,7 +45,7 @@ public class UserService {
         Optional<User> optionalUser=userRepository.findByEmail(mail);
         if(optionalUser.isEmpty())
         {
-            //in valid user
+            //in-valid user
         }
         User user=optionalUser.get();
       if(!bCryptPasswordEncoder.matches(password,user.getHashedPassword())){
@@ -70,15 +70,26 @@ public class UserService {
     }
 
     public void logout(String token) {
-        Optional<Token> optionalToken = tokenRepository.findByValueAndIsDeleted(token, false);
-       if(optionalToken.isEmpty()) {
+      Optional<Token> optionalToken = tokenRepository.findByValueAndIsDeletedEquals(token, false);
+       // Optional<Token> optionalToken = tokenRepository.findByValue(token);
+
+        if(optionalToken.isEmpty()) {
            // then doNthg
            return ;
        }
 
            Token validToken=optionalToken.get();
-            validToken.setIsDeleted(true);
+            validToken.setDeleted(true);
             tokenRepository.save(validToken);
 
+    }
+
+    public boolean validateToken(String token) {
+        //if token is not deleted
+        //if token is not expired
+        //if token is present
+        Optional<Token> tokenOptional = tokenRepository.findByValueAndIsDeletedEqualsAndExpiryDateGreaterThan(
+                token, false, new Date());
+        return tokenOptional.isPresent();
     }
 }

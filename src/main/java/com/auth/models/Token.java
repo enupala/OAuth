@@ -14,7 +14,7 @@ public class Token extends BaseClass{
 
     private String value;
     private Date expiryDate;
-    private Boolean isDeleted;
+    private boolean isDeleted;
     @ManyToOne
     private User user;
 }

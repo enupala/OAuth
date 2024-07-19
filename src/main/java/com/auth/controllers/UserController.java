@@ -11,10 +11,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -47,5 +44,12 @@ public class UserController {
     {
         userService.logout(token);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/validate/{token}")
+    public Boolean validateToken(@PathVariable("token") String token)
+    {
+
+      return   userService.validateToken(token);
     }
 }
